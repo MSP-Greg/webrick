@@ -7,4 +7,8 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/test_*.rb']
 end
 
-task :default => :test
+task :vers do 
+  STDERR.puts "WEBrick::VERSION #{WEBrick::VERSION}"
+end
+
+task :default => [:test, :vers]

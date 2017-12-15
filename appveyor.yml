@@ -1,0 +1,30 @@
+init:
+  - if %ruby_version%==_trunk (
+      appveyor DownloadFile https://ci.appveyor.com/api/projects/MSP-Greg/ruby-loco/artifacts/ruby_trunk.7z -FileName C:\ruby_trunk.7z &
+      7z x C:\ruby_trunk.7z -oC:\ruby_trunk
+    )
+
+install:
+  # Standard AV path has a lot of items
+  - SET PATH=C:\ruby%ruby_version%\bin;C:\Program Files\7-Zip;C:\Program Files\AppVeyor\BuildAgent;C:\Program Files\Git\cmd;C:\Windows\system32
+  - bundle install --jobs=3 --retry=3
+
+build: off
+
+test_script:
+  - rake
+
+on_finish:
+- ruby -v
+
+environment:
+  matrix:
+    - ruby_version: _trunk
+    - ruby_version: 24
+    - ruby_version: 24-x64
+    - ruby_version: 23
+    - ruby_version: 23-x64
+
+matrix:
+  allow_failures:
+    - ruby_version: _trunk
