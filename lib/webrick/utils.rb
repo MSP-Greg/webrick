@@ -37,7 +37,11 @@ module WEBrick
         Process::Sys::setgid(pw.gid)
         Process::Sys::setuid(pw.uid)
       else
-        warn("WEBrick::Utils::su doesn't work on this platform")
+        if RUBY_VERSION < "2.5"
+          warn("WEBrick::Utils::su doesn't work on this platform")
+        else
+          warn("WEBrick::Utils::su doesn't work on this platform", uplevel: 1)
+        end
       end
     end
     module_function :su
